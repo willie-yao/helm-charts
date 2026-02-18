@@ -1,0 +1,63 @@
+{{- range $name, $pool := .Values.nodePools }}
+---
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "karpenter-config.labels" $ | nindent 4 }}
+  annotations:
+    kubernetes.io/description: "Karpenter NodePool {{ $name }}"
+spec:
+  {{- if $pool.weight }}
+  weight: {{ $pool.weight }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with $pool.template.metadata.labels }}
+      labels:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $pool.template.metadata.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      nodeClassRef:
+        group: {{ $pool.template.spec.nodeClassRef.group }}
+        kind: {{ $pool.template.spec.nodeClassRef.kind }}
+        name: {{ $pool.template.spec.nodeClassRef.name }}
+      {{- with $pool.template.spec.expireAfter }}
+      expireAfter: {{ . }}
+      {{- end }}
+      {{- with $pool.template.spec.terminationGracePeriod }}
+      terminationGracePeriod: {{ . }}
+      {{- end }}
+      {{- with $pool.template.spec.taints }}
+      taints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $pool.template.spec.startupTaints }}
+      startupTaints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      requirements:
+        {{- toYaml $pool.template.spec.requirements | nindent 8 }}
+  {{- with $pool.limits }}
+  limits:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $pool.disruption }}
+  disruption:
+    {{- if .consolidationPolicy }}
+    consolidationPolicy: {{ .consolidationPolicy }}
+    {{- end }}
+    {{- if .consolidateAfter }}
+    consolidateAfter: {{ .consolidateAfter }}
+    {{- end }}
+    {{- with .budgets }}
+    budgets:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end }}
+{{- end }}

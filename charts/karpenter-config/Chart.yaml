@@ -1,0 +1,6 @@
+apiVersion: v2
+name: karpenter-config
+description: Karpenter NodePool and AKSNodeClass CRDs for AKS Node Auto-Provisioning (NAP)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -1,0 +1,39 @@
+{{- range $name, $class := .Values.nodeClasses }}
+---
+apiVersion: karpenter.azure.com/v1beta1
+kind: AKSNodeClass
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "karpenter-config.labels" $ | nindent 4 }}
+  annotations:
+    kubernetes.io/description: "AKSNodeClass {{ $name }}"
+spec:
+  {{- with $class.imageFamily }}
+  imageFamily: {{ . }}
+  {{- end }}
+  {{- with $class.osDiskSizeGB }}
+  osDiskSizeGB: {{ . }}
+  {{- end }}
+  {{- with $class.vnetSubnetID }}
+  vnetSubnetID: {{ . }}
+  {{- end }}
+  {{- with $class.maxPods }}
+  maxPods: {{ . }}
+  {{- end }}
+  {{- with $class.fipsMode }}
+  fipsMode: {{ . }}
+  {{- end }}
+  {{- with $class.security }}
+  security:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $class.kubelet }}
+  kubelet:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $class.tags }}
+  tags:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

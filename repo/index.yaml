@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  karpenter-config:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-02-18T17:25:27.74062701Z"
+    description: Karpenter NodePool and AKSNodeClass CRDs for AKS Node Auto-Provisioning
+      (NAP)
+    digest: 404ae7de94596cb6096bb5e58eaff65bba8a9bba8f407f5d07a24f2ae09f3bfd
+    name: karpenter-config
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/willie-yao/helm-charts/main/repo/karpenter-config-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-02-18T17:25:27.739708608Z"
