@@ -13,7 +13,7 @@ nodePools:
         nodeClassRef:
           group: karpenter.azure.com
           kind: AKSNodeClass
-          name: default
+          name: general-purpose
         expireAfter: Never
         startupTaints:
           - key: node.cilium.io/agent-not-ready
@@ -41,7 +41,7 @@ nodePools:
         - nodes: "10%"
 
 nodeClasses:
-  default:
+  general-purpose:
     imageFamily: Ubuntu
     osDiskSizeGB: 128
     tags: {}
